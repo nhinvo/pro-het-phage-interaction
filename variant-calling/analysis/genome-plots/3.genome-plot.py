@@ -55,7 +55,7 @@ def plot_mut_on_genome(df, exp, genome_len_df):
     color_norm = mcolors.Normalize(vmin=df['mutation count'].min(), vmax=df['mutation count'].max())
 
     # split dfs into reps
-    groups = df.groupby(['treatment', 'rep'])
+    groups = df.groupby(['treatment', 'rep'], sort=False)
 
     # plotting 
     fig, axes = plt.subplots(len(groups), 1, figsize=(15, 5), sharex=True)
@@ -82,9 +82,7 @@ def plot_mut_on_genome(df, exp, genome_len_df):
 
         # other axes edits 
         ax.set_xlim(-2, genome_len+2)  # Set x-axis limit from -1 to genome_len+1
-        # ax.set_ylabel(ax_title, rotation=0, labelpad=30, loc='center')
-        ax.set_ylabel(ax_title, rotation=0, labelpad=30, position=(-0.1, 0.9))
-        ax.set_ylabel(ax_title, rotation=0, va='top')
+        ax.set_ylabel(ax_title, rotation=0, ha='right', va='center')   # va='top', , labelpad=50
 
         if ax_index != (len(axes) - 1):
             # Hide the ticks for all but last axes' axis
@@ -123,10 +121,10 @@ def plot_vcf(fpath, genome_len_df):
     """
     df = pd.read_table(fpath)
     
-    df['exp'] = df['Sample'].str.split(' ').str[0]
+    df['exp'] = df['Sample'].str.split('_').str[0]
     
-    df['treatment'] = df['Sample'].str.split(' ').str[1]
-    df['rep'] = df['Sample'].str.split(' ').str[-1]
+    df['treatment'] = df['Sample'].str.split('_').str[1]
+    df['rep'] = df['Sample'].str.split('_').str[-1]
     df['region type'] = df['gene ID'].apply(lambda x: 'Intergenic' if 'intergenic' not in x else 'Gene')
 
     # group by experiment and plot each 

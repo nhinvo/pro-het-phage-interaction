@@ -5,11 +5,13 @@ import numpy as np
 from pathlib import Path 
 import matplotlib.pyplot as plt
 
+SAMPLES_TSV = "../../../sample_metadata.tsv"
+
 def assign_taxon_colors(df):
     """
     """
     # group by rank 
-    groups = df.groupby(['rank'])
+    groups = df.groupby(['rank'], sort=False)
 
     color_dict_list = []
 
@@ -40,11 +42,15 @@ def assign_taxon_colors(df):
 
     return color_dict
 
-def plot(df, plot_name, color_dict):
+def plot(df, sdf, plot_name, color_dict):
     """
     """
     # reformat (pivot) df 
     df = df.pivot(index='Sample', columns='taxon_name', values='percent').reset_index()
+
+    # reorder samples 
+    df["Sample"] = pd.Categorical(df["Sample"], categories=sdf["Sample"], ordered=True)
+    df = df.sort_values("Sample").reset_index(drop=True)
 
     # obtain bar order
     order_list = df['Sample'].values.tolist()
@@ -79,40 +85,24 @@ def plot(df, plot_name, color_dict):
 
     # plt.tight_layout()
     plt.savefig(f'data/{plot_name}.png')
+    plt.savefig(f'data/{plot_name}.svg')
     plt.close()
 
 def main():
     Path('data').mkdir(exist_ok=True, parents=True)
 
     df = pd.read_table('data/HetsComposition.tsv')
-
-    # # group by rank 
-    # ranks = df.groupby(['rank'])
-    # for index, rank_df in ranks:
-    #     rank = index[0]
-
-    #     # obtain unique color for each taxon in rank 
-    #     color_dict = assign_taxon_colors(rank_df)
-
-    #     # group further by treatment 
-    #     treatments = rank_df.groupby(['Treatment'])
-
-    #     for index, treatment_df in treatments:
-    #         treatment = index[0]
-    #         plot_name = f'{rank}_{treatment}'
-    #         plot(treatment_df, plot_name, color_dict)
-
-
+    sdf = pd.read_table(SAMPLES_TSV)
 
     # obtain colors 
     color_dict = assign_taxon_colors(df)
 
     # group for plots 
-    plot_groups = df.groupby(['Treatment', 'rank'])
+    plot_groups = df.groupby(['Treatment', 'rank'], sort=False)
 
     for index, df in plot_groups:
         plot_name = f'{index[0]}_{index[1]}'
-        plot(df, plot_name, color_dict)
+        plot(df, sdf, plot_name, color_dict)
 
 
 main()

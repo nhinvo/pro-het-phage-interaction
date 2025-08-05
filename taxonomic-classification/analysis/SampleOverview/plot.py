@@ -74,7 +74,7 @@ def main():
 
         # import df and group by treatment 
         df = pd.read_excel(fpath)
-        groups = df.groupby(['Treatment'])
+        groups = df.groupby(['Treatment'], sort=False)
 
         # plot each treatment 
         for index, df in groups:

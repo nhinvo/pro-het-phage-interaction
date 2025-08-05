@@ -5,6 +5,9 @@ import pandas as pd
 from pathlib import Path 
 import vcf_parse_helper
 
+samples_tsv = "../../../sample_metadata.tsv"
+outdir = 'data/2.parsed_vcf'
+
 def process_vcf(fpath, gene_df):
     """
     Returns df with mutation info from vcf file and gene info. 
@@ -50,8 +53,8 @@ def final_formatting(df):
 
     df = df.drop(['INDEL', 'seq_id'], axis=1)
 
-    df['replicate'] = df['Sample'].str.split(' ').str[-1]
-    df['treatment'] = df['Sample'].str.split(' ').str[1]
+    df['replicate'] = df['Sample'].str.split('_').str[-1]
+    df['treatment'] = df['Sample'].str.split('_').str[1]
 
     col_order = [
         'Sample', 
@@ -76,8 +79,8 @@ def save_all_mutations(df, outdir):
     """
     """
     # group by experiment (Syn / M4A1A / M4XE)
-    df['exp'] = df['Sample'].str.split(' ').str[0]
-    groups = df.groupby(['exp'])
+    df['exp'] = df['Sample'].str.split('_').str[0]
+    groups = df.groupby(['exp'], sort=False)
 
     output_xlsx_path = f"{outdir}/All-Mutations.xlsx"
     with pd.ExcelWriter(output_xlsx_path) as file:
@@ -131,8 +134,8 @@ def supplemental_filter(df, outdir):
     """
     """
     # group by experiment (Syn / M4A1A / M4XE)
-    df['exp'] = df['Sample'].str.split(' ').str[0]
-    groups = df.groupby(['exp'])
+    df['exp'] = df['Sample'].str.split('_').str[0]
+    groups = df.groupby(['exp'], sort=False)
 
     output_xlsx_path = f"{outdir}/Filtered-Mutations.xlsx"
     with pd.ExcelWriter(output_xlsx_path) as file:
@@ -153,7 +156,7 @@ def plot_format(df, outdir):
     Saves df for plotting. 
     """
     # group by experiment and gene id 
-    groups = df.groupby(['Sample', 'gene ID'])
+    groups = df.groupby(['Sample', 'gene ID'], sort=False)
 
     data = []
     for index, gdf in groups:
@@ -173,7 +176,7 @@ def plot_format(df, outdir):
     df.to_csv(f'{outdir}/plot_table.tsv', sep='\t', index=False)
 
 def main():
-    outdir = 'data/2.parsed_vcf'
+    # make output dir 
     Path(outdir).mkdir(parents=True, exist_ok=True)
 
     # import gff files 
@@ -181,7 +184,6 @@ def main():
     gene_df = vcf_parse_helper.obtain_genes(ref_genome_dir)
 
     # import samples tsv
-    samples_tsv = "../../../sample_metadata.tsv"
     sdf = pd.read_table(samples_tsv)
 
     dfs = []
@@ -193,7 +195,7 @@ def main():
         dfs.append(df)
         
     df = pd.concat(dfs)
-    df = pd.merge(df, sdf, on=['FileName'], how='inner')
+    df = pd.merge(sdf, df, on=['FileName'], how='inner')
 
     # format df before saving 
     df = final_formatting(df)  

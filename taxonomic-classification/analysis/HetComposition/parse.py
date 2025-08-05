@@ -39,7 +39,7 @@ def process_summary_data(kaiju_summary_dir, sdf):
         dfs.append(df)
 
     df = pd.concat(dfs)
-    df = pd.merge(df, sdf, on=['FileName'], how='inner')
+    df = pd.merge(sdf, df, on=['FileName'], how='inner')
     df.to_csv(out_fpath, sep='\t', index=False)
 
     return df
@@ -48,7 +48,7 @@ def calculate_pcnt(df, cols):
     """
     Calculate percentage (reads) for each group.
     """
-    groups = df.groupby(cols)
+    groups = df.groupby(cols, sort=False)
 
     dfs = []
     for index, gdf in groups:
@@ -64,7 +64,7 @@ def pcnt_grouping(df, pcnt):
     """
     """
     # group before processing 
-    groups = df.groupby(['Treatment', 'rank'])
+    groups = df.groupby(['Treatment', 'rank'], sort=False)
 
     dfs = []
 
@@ -74,7 +74,7 @@ def pcnt_grouping(df, pcnt):
         taxon_passed = set(taxon_passed)
 
         # group by sample and combine taxon that did not pass threshold
-        sample_groups = gdf.groupby(['FileName'])
+        sample_groups = gdf.groupby(['FileName'], sort=False)
 
         for index, sdf in sample_groups:
             # filter for taxon that passed  
@@ -109,7 +109,7 @@ def excel_save(df):
     Save df as excel file. 
     """
     # group data into tabs 
-    tabs = df.groupby(['Treatment', 'rank'])
+    tabs = df.groupby(['Treatment', 'rank'], sort=False)
 
     with pd.ExcelWriter('data/HetsComposition.xlsx') as writer:
         for index, df in tabs:
@@ -161,7 +161,7 @@ def main():
 
     # import samples tsv
     sdf = pd.read_table(SAMPLES_TSV)
-    sdf['Treatment'] = sdf['Sample'].str.split(' ').str[0]
+    sdf['Treatment'] = sdf['Sample'].str.split('_').str[0]
 
     # import summary df
     df = process_summary_data(KAIJU_SUMMARY_DIR, sdf)

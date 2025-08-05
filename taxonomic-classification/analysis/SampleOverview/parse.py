@@ -16,12 +16,12 @@ def import_raw_count(fpath, sdf):
     df = df.rename(columns={'sample_name':'FileName'})
 
     # merge with samples df 
-    df = pd.merge(df, sdf, on=['FileName'], how='outer')
+    df = pd.merge(sdf, df, on=['FileName'], how='inner')
 
     # obtain ref genome 
-    df['Group'] = df['Sample'].str.split(' ').str[0]
+    df['Group'] = df['Sample'].str.split('_').str[0]
 
-    groups = df.groupby(['Group'])
+    groups = df.groupby(['Group'], sort=False)
 
     dfs = []
     long_dfs = []
@@ -54,7 +54,7 @@ def import_raw_count(fpath, sdf):
 
     # save raw data
     df = pd.concat(dfs)
-    df['Treatment'] = df['Sample'].str.split(' ').str[0]
+    df['Treatment'] = df['Sample'].str.split('_').str[0]
     df = df[['Sample', 'Treatment', 'Prochlorococcus', 'Synechococcus', 'Viruses', 'Other Genus', 'Unclassified', 'Total']]
     df.to_excel(f'data/RawClassificationSummary.xlsx', index=False)
 
@@ -64,12 +64,12 @@ def import_raw_count(fpath, sdf):
     # return the raw read count long format for futher parsing 
     return long_df
 
-def calculate_relative(df):
+def calculate_relative(df, samples_df):
     """
     Obtain relative abundance. 
     """
     # group by sample 
-    sample_groups = df.groupby('Sample')
+    sample_groups = df.groupby('Sample', sort=False)
 
     dfs = []
     for index, sdf in sample_groups:
@@ -79,8 +79,12 @@ def calculate_relative(df):
 
     df = pd.concat(dfs)
     df = df.pivot(index=['Sample'], columns='taxon_name', values='percent').reset_index()   
-    df['Treatment'] = df['Sample'].str.split(' ').str[0]
+    df['Treatment'] = df['Sample'].str.split('_').str[0]
     df = df[['Sample', 'Treatment', 'Prochlorococcus', 'Synechococcus', 'Viruses', 'Other Genus', 'Unclassified']]
+
+    # sort samples - for plotting 
+    df["Sample"] = pd.Categorical(df["Sample"], categories=samples_df["Sample"], ordered=True)
+    df = df.sort_values("Sample").reset_index(drop=True)
     
     df.to_excel(f'data/RelativeClassificationSummary.xlsx', index=False)
 
@@ -96,7 +100,7 @@ def process_summary(summary_fpath, samples_tsv):
     df = import_raw_count(summary_fpath, sdf)
 
     # obtain relative count df 
-    calculate_relative(df)
+    calculate_relative(df, sdf)
 
 
 

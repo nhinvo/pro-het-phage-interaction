@@ -6,6 +6,7 @@
 **/trash/**
 **/misc/**
 **/Misc/**
+*.svg
 **/README.md
 **/README.markdown
 !README.md

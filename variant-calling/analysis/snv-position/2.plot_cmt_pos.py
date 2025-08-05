@@ -52,15 +52,8 @@ def import_cmt_df(fpath, sdf):
     df = pd.merge(df, sdf, on=['FileName'], how='left')
 
     # obtain treatment & rep from sample name
-    df['Treatment'] = df['Sample'].str.split(' ').str[1]
+    df['Treatment'] = df['Sample'].str.split('_').str[1]
     df['Replicate'] = df['Sample'].str[-1]
-
-    # # order treatment (for plotting)
-    # treatment_order = ['NPC', 'Syn9-1', 'Syn9-2']
-    # df['treatment'] = pd.Categorical(df['treatment'], categories=treatment_order, ordered=True)    
-
-    # sort so that things are plotting in order
-    # df = df.sort_values(by=['Group', 'Replicate'])
 
     # save table
     # group = fpath.stem.split('_')[1]
