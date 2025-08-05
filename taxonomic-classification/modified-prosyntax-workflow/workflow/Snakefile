@@ -1,0 +1,86 @@
+from pathlib import Path
+import shutil
+import pandas as pd
+import argparse
+import glob
+
+### Load samples.tsv file and obtain list of samples ###
+SAMPLE_TABLE = pd.read_csv(config["input"]["sample table"], index_col="sample", sep="\t")
+SAMPLE_TABLE.index = SAMPLE_TABLE.index.map(str)  # convert index (samples) to string 
+SAMPLES = SAMPLE_TABLE.index.tolist()  # obtain list of samples 
+
+##### Define intermediate/results files/directories #####
+scratch_dir = Path(config["scratch directory"])
+results_dir = Path(config["results directory"])
+
+Path(scratch_dir).mkdir(exist_ok=True, parents=True)
+Path(results_dir).mkdir(exist_ok=True, parents=True)
+
+scratch_dict = {
+    # SRA download
+    "SRA_dl": scratch_dir / "SRA",
+
+    # thermus removal
+    "genome_index_done": scratch_dir / "thermus_index.done", 
+    "mapped_thermus": scratch_dir / "mapped_thermus", 
+    "thermus_removed_reads": scratch_dir / "thermus_removed_reads", 
+
+    # read trimming 
+    "trimmed_reads": scratch_dir / "trimmed_reads",
+
+    # kaiju classification 
+    "base_kaiju": scratch_dir / "base_kaiju",  # base kaiju output
+    "kaiju_names": scratch_dir / "kaiju_names",  # kaiju-addTaxonNames output
+    "kaiju_summary": scratch_dir / "kaiju_summary",  # kaiju2table output
+
+    # Classified Pro Syn reads
+    "prosyn_reads": {
+        # dir of read name classified as Pro or Syn 
+        "read_name": scratch_dir / "prosyn_reads" / "read_name", 
+        # dir of read name classified as Pro or Syn along with their full taxonomic classification 
+        "read_name_classification": scratch_dir / "prosyn_reads" / "read_name_classification", 
+        # dir of extracted fastq sequences of Pro/Syn reads
+        "extracted_reads": scratch_dir / "prosyn_reads" / "extracted_reads", 
+    }, 
+
+    # diamond blast binned reads 
+    "diamond_blast": scratch_dir / "diamond_blast",
+
+    # read count normalization
+    "count_normalization": {
+        # dir of sample directories containing normalized count files for each clade
+        "normalized_counts": scratch_dir / "count_normalization" / "normalized_counts",
+        # directory to store aggreated normalized counts (1 file per sample)
+        "aggregated_normalized": scratch_dir / "count_normalization" / "aggregated_normalized",
+    }, 
+}
+
+results_dict = {
+    # read count and percentages of specified genus in config
+    "summary_read_count": results_dir / "summary_read_count.tsv", 
+    # normalized counts (genome equivalents) of Pro and Syn clades 
+    "final_normalized_count": results_dir / "normalized_counts.tsv", 
+}
+
+##### Define the file files to generate #####
+rule all:
+    input:
+        results_dict['summary_read_count'], 
+        # Kaiju Name
+        expand(scratch_dict['kaiju_names'] / "{sample}_names.out", sample=SAMPLES), 
+        # Kaiju Summaries
+        expand(scratch_dict['kaiju_summary'] / "{sample}_kaiju_summary_genus.tsv", sample=SAMPLES), 
+        expand(scratch_dict['kaiju_summary'] / "{sample}_kaiju_summary_family.tsv", sample=SAMPLES), 
+        expand(scratch_dict['kaiju_summary'] / "{sample}_kaiju_summary_order.tsv", sample=SAMPLES), 
+        expand(scratch_dict['kaiju_summary'] / "{sample}_kaiju_summary_class.tsv", sample=SAMPLES),
+        expand(scratch_dict['kaiju_summary'] / "{sample}_kaiju_summary_phylum.tsv", sample=SAMPLES),
+
+##### Define the Rules that are used in this pipeline #####
+include: "rules/SRA_dl.smk"
+include: "rules/thermus_removal.smk"
+include: "rules/trim_reads.smk"
+include: "rules/run_kaiju.smk"
+include: "rules/extract_reads.smk"
+include: "rules/blast_reads.smk"
+include: "rules/normalize_reads.smk"
+include: "rules/aggregate_results.smk"

@@ -1,0 +1,4 @@
+experiment_name: "Phage Variant Calling"
+sample_table: ./samples.csv
+myscripts_directory: ./scripts
+ref_genome_directory: /orcd/data/chisholm/002/hstor001/nvo/projects/25_AllisonPhageVariantCalling/variant-calling/modified-widevariant-workflow/1-run-WV/ref_genome

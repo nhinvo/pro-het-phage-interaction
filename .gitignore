@@ -1,0 +1,21 @@
+# folders to ignore at all depths
+**/logs/**
+**/log/**
+**/scratch/**
+**/.snakemake/**
+**/trash/**
+**/misc/**
+**/Misc/**
+**/README.md
+**/README.markdown
+!README.md
+
+# variant calling folder 
+variant-calling/modified-widevariant-workflow/0-input/raw_reads/
+variant-calling/modified-widevariant-workflow/1-Mapping/
+variant-calling/modified-widevariant-workflow/2-Case/
+variant-calling/modified-widevariant-workflow/data/
+variant-calling/modified-widevariant-workflow/Mapping/ 
+
+variant-calling/analysis/genome-plots/__pycache__/
+variant-calling/analysis/genome-plots/data/1.bcftools_out/
