@@ -78,11 +78,11 @@ def plot(df, plot_name, color_dict):
     plt.suptitle(plot_name)
 
     # plt.tight_layout()
-    plt.savefig(f'data/plots/{plot_name}.png')
+    plt.savefig(f'data/{plot_name}.png')
     plt.close()
 
 def main():
-    Path('data/plots').mkdir(exist_ok=True, parents=True)
+    Path('data').mkdir(exist_ok=True, parents=True)
 
     df = pd.read_table('data/HetsComposition.tsv')
 
