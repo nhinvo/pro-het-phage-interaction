@@ -118,12 +118,12 @@ def filter_mutations(df):
     # TREATMENT filtering: group by gene/intergenic region
     # keep mutations in: NPC only or 1st AND 2nd infection 
     infection_treatments = {
-        x for x in df['treatment'].unique() if x!='NPC'
+        x for x in df['treatment'].unique() if x!='nophagecontrol'
     }
 
     df = df.groupby(['gene ID']).filter(
         lambda x: (
-            set(x['treatment']) == {'NPC'} or 
+            set(x['treatment']) == {'nophagecontrol'} or 
             set(x['treatment']) == infection_treatments
         )
     )    

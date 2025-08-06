@@ -63,6 +63,7 @@ def plot(df, treatment, data_type):
 
     # plt.tight_layout()
     plt.savefig(f'data/{treatment}_Composition_{data_type}.png')
+    plt.savefig(f'data/{treatment}_Composition_{data_type}.svg')
     plt.close()
 
     

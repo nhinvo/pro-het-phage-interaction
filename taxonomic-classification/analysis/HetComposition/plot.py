@@ -11,7 +11,7 @@ def assign_taxon_colors(df):
     """
     """
     # group by rank 
-    groups = df.groupby(['rank'], sort=False)
+    groups = df.groupby(['rank'])
 
     color_dict_list = []
 
