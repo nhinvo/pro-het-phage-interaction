@@ -13,16 +13,9 @@ All codes for microbial abundance analysis are located in `taxonomic-classificat
 
 **Overview Sample Composition:**  
 <div style="display: flex; justify-content: flex-start; align-items: center;">
-  <img src="taxonomic-classification/analysis/SampleOverview/data/MED4-Alteromonas_Composition_Relative.png" style="width: 40%;"/>
-  <img src="taxonomic-classification/analysis/SampleOverview/data/MED4Xe_Composition_Relative.png" style="width: 40%;"/>
-  <img src="taxonomic-classification/analysis/SampleOverview/data/MITS9451Xe_Composition_Relative.png" style="width: 40%;"/>
+  <img src="taxonomic-classification/analysis/SampleOverview/data/MED4-Alteromonas_Composition_Relative.png" style="width: 50%;"/>
+  <img src="taxonomic-classification/analysis/SampleOverview/data/MITS9451Xe_Composition_Relative.png" style="width: 50%;"/>
 </div>  
-
-<p align="left">
-  <img src="taxonomic-classification/analysis/SampleOverview/data/MED4-Alteromonas_Composition_Relative.png" width="30%">
-  <img src="taxonomic-classification/analysis/SampleOverview/data/MED4Xe_Composition_Relative.png" width="30%">
-  <img src="taxonomic-classification/analysis/SampleOverview/data/MITS9451Xe_Composition_Relative.png" width="30%">
-</p>
 
 ### Modified ProSynTax Workflow  
 The [ProSynTax-workflow](https://github.com/jamesm224/ProSynTax-workflow/tree/main) was modified to include removal of Thermus internal standards, and to generate additional data using Kaiju.   
@@ -49,13 +42,14 @@ All codes for variant calling analysis are located in `variant-calling`.
 
 **Variant position across samples:**  
 <p align="center">
-  <img src="variant-calling/analysis/snv-position/data/position_barplots/MED4Xe/62202.png" width="60%"><br>
-  <img src="variant-calling/analysis/snv-position/data/position_barplots/MED4-Alteromonas/679340.png" width="60%"><br>
-  <img src="variant-calling/analysis/snv-position/data/position_barplots/MITS9451Xe/516398.png" width="60%"><br>
+  <img src="variant-calling/analysis/snv-position/data/position_barplots/MED4Xe/62202.png" width="50%"><br>
+  <img src="variant-calling/analysis/snv-position/data/position_barplots/MITS9451Xe/516398.png" width="50%"><br>
 </p>  
 
-**Variant positions across genome:** 
-<img src="variant-calling/analysis/genome-plots/data/3.genome_plots/MED4Xe.png" alt="Workflow Image" style="width:50%;">  
+**Variant positions across genome:**  
+<p align="left">
+  <img src="variant-calling/analysis/genome-plots/data/3.genome_plots/MED4Xe.png" style="width:60%;">  
+</p>  
 
 ### Modified WideVariant Workflow  
 The [WideVariant](https://github.com/liebermanlab/WideVariant) workflow was modified to decrease filtering thresholds: 
