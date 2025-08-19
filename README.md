@@ -9,12 +9,12 @@ All codes for microbial abundance analysis are located in `taxonomic-classificat
 - Scripts in `taxonomic-classification/analysis/` were used to generate data and figures.   
 
 **Figure 10:**  
-<img src="taxonomic-classification/analysis/HetComposition/data/Figure10.jpg" alt="Workflow Image" style="width:70%;">  
+<img src="docs/img/Figure10.jpg" alt="Workflow Image" style="width:70%;">  
 
 **Overview Sample Composition:**  
 <div style="display: flex; justify-content: flex-start; align-items: center;">
-  <img src="taxonomic-classification/analysis/SampleOverview/data/MED4-Alteromonas_Composition_Relative.png" style="width: 49%;"/>
-  <img src="taxonomic-classification/analysis/SampleOverview/data/MITS9451Xe_Composition_Relative.png" style="width: 49%;"/>
+  <img src="docs/img/MED4-Alteromonas_Composition_Relative.png" style="width: 49%;"/>
+  <img src="docs/img/MITS9451Xe_Composition_Relative.png" style="width: 49%;"/>
 </div>  
 
 ### Modified ProSynTax Workflow  
@@ -42,13 +42,13 @@ All codes for variant calling analysis are located in `variant-calling`.
 
 **Variant position across samples:**  
 <p align="center">
-  <img src="variant-calling/analysis/snv-position/data/position_barplots/MED4Xe/62202.png" width="49%"><br>
-  <img src="variant-calling/analysis/snv-position/data/position_barplots/MITS9451Xe/516398.png" width="49%"><br>
+  <img src="docs/img/62202.png" width="49%">
+  <img src="docs/img/516398.png" width="49%">
 </p>  
 
 **Variant positions across genome:**  
 <p align="left">
-  <img src="variant-calling/analysis/genome-plots/data/3.genome_plots/MED4Xe.png" style="width:60%;">  
+  <img src="docs/img/MED4Xe.png" style="width:80%;">  
 </p>  
 
 ### Modified WideVariant Workflow  
