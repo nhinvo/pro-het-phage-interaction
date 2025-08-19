@@ -20,3 +20,6 @@ variant-calling/modified-widevariant-workflow/Mapping/
 
 variant-calling/analysis/genome-plots/__pycache__/
 variant-calling/analysis/genome-plots/data/1.bcftools_out/
+
+# NCBI SRA submission folder 
+NCBI_submission/ 

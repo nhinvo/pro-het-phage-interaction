@@ -1,4 +1,3 @@
-## *Prochlorococcus*: influence of Heterotrophic Communities on Cyanophage Infection Dynamics
+## *Picocyanobacteria*: influence of Heterotrophic Communities on Cyanophage Infection Dynamics
 Repository for modified pipelines, scripts, and figures for DNA sequencing analyses in the publication: 
-1. Coe, A., Parker, S.M., **Vo, N.N.**, Kearney, S., Pollack, S., Emster, K., Mullet, J., Castro, K.G., Chisholm, S.W. (2025). The Influence of Heterotrophic Communities on Cyanophage Infection Dynamics in Prochlorococcus and Synechococcus Cultures. (In preparation). 
-
+1. Coe, A., Parker, S.M., Vo, N.N., Kearney, S., Pollack, S., Emster, K., Mullet, J., Castro, K.G., Chisholm, S.W. (2025). The Influence of Heterotrophic Communities on Cyanophage Infection Dynamics in Prochlorococcus and Synechococcus Cultures. (In preparation). 
