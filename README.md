@@ -28,7 +28,7 @@ Snakemake rules added:
 - `remove_thermus_reads`: remove Thermus reads from FASTQ file.  
 - `kaiju_summary_*`: additional `kaiju2table` rules to produce summary output for different taxonomic ranks. 
 
-#### Abundance Analysis   
+### Abundance Analysis   
 Subfolders within the `analysis/` directory contains:  
 - `SampleOverview/`: scripts to parse and plot relative and absolute composition of ['Prochlorococcus', 'Synechococcus', 'Viruses', 'Other Genus', 'Unclassified'] within each sample.  
 - `HetComposition/`: scripts to parse and plot relative composition of Heterotroph community within each sample for various taxonomic ranks.  
